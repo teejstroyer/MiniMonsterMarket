@@ -1,0 +1,37 @@
+[gd_scene load_steps=7 format=3 uid="uid://dcdeysj50fa0l"]
+
+[ext_resource type="Texture2D" uid="uid://dfki5i4vbq6sq" path="res://Assets/testEnemy.png" id="1_bpab3"]
+[ext_resource type="Script" path="res://Scripts/MonsterControl.gd" id="1_xca2n"]
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_ori6k"]
+specular_color = Color(1, 0.294118, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qcxb7"]
+transparency = 1
+albedo_texture = ExtResource("1_bpab3")
+rim = 0.51
+rim_tint = 0.94
+rim_texture = SubResource("CanvasTexture_ori6k")
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_hxum1"]
+material = SubResource("StandardMaterial3D_qcxb7")
+size = Vector2(1, 1)
+orientation = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xyubw"]
+
+[node name="TestMonster" type="CharacterBody3D"]
+script = ExtResource("1_xca2n")
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pivot"]
+transform = Transform3D(0.999993, -0.00295589, 0.00213953, 0.00295663, 0.999996, -0.000341363, -0.0021385, 0.000347704, 0.999998, 0, 0, 0)
+mesh = SubResource("PlaneMesh_hxum1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_xyubw")
+
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]

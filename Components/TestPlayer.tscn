@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=3 uid="uid://c18jfoms3v1ba"]
+
+[ext_resource type="Texture2D" uid="uid://r3ofhl302o3v" path="res://Assets/testPlayer.png" id="1_dl2cf"]
+[ext_resource type="Script" path="res://Scripts/PlayerControl.gd" id="1_h87oj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ur1bt"]
+transparency = 1
+albedo_texture = ExtResource("1_dl2cf")
+billboard_mode = 1
+billboard_keep_scale = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_8hsvc"]
+material = SubResource("StandardMaterial3D_ur1bt")
+size = Vector2(1, 1)
+orientation = 2
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_b2kyq"]
+
+[node name="TestPlayer" type="CharacterBody3D"]
+script = ExtResource("1_h87oj")
+
+[node name="Pivot" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pivot"]
+mesh = SubResource("PlaneMesh_8hsvc")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_b2kyq")
