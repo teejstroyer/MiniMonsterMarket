@@ -114,6 +114,7 @@ transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10,
 transform = Transform3D(1, 0, 0, 0, 0.258819, 0.965926, 0, -0.965926, 0.258819, 0, 12, 5)
 
 [node name="Camera3D" type="Camera3D" parent="CameraPivot"]
+transform = Transform3D(1, -1.02157e-16, 2.46629e-16, 2.4663e-16, 0.707107, -0.707107, -1.02157e-16, 0.707107, 0.707107, 2.08165e-12, -5, -6.134)
 
 [node name="Ground" type="StaticBody3D" parent="."]
 

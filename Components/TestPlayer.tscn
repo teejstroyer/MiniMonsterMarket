@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://c18jfoms3v1ba"]
+[gd_scene load_steps=18 format=3 uid="uid://c18jfoms3v1ba"]
 
 [ext_resource type="Texture2D" uid="uid://r3ofhl302o3v" path="res://Assets/testPlayer.png" id="1_dl2cf"]
 [ext_resource type="Script" path="res://Scripts/PlayerControl.gd" id="1_h87oj"]
+[ext_resource type="Texture2D" uid="uid://b51mpd4wrx6nt" path="res://Assets/cosmichorror.png" id="3_f2iuj"]
+[ext_resource type="Texture2D" uid="uid://tnwhrmejfw0x" path="res://Assets/PlayerAtlas.tres" id="3_h2l7h"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ur1bt"]
 transparency = 1
@@ -16,6 +18,43 @@ orientation = 2
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_b2kyq"]
 
+[sub_resource type="ViewportTexture" id="ViewportTexture_ybase"]
+viewport_path = NodePath("SubViewport")
+
+[sub_resource type="SkeletonModificationStack2D" id="SkeletonModificationStack2D_ytqkx"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_melh4"]
+atlas = ExtResource("3_h2l7h")
+region = Rect2(589, 614, 63, 125)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o2nef"]
+atlas = ExtResource("3_h2l7h")
+region = Rect2(478, 625, 94, 131)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_75i8u"]
+atlas = ExtResource("3_h2l7h")
+region = Rect2(103, 567, 186, 209)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mpcng"]
+atlas = ExtResource("3_h2l7h")
+region = Rect2(25, 29, 579, 479)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2p1pw"]
+atlas = ExtResource("3_h2l7h")
+region = Rect2(647, 436, 168, 129)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hl6qr"]
+atlas = ExtResource("3_f2iuj")
+region = Rect2(659, 616, 63, 125)
+
+[sub_resource type="Animation" id="Animation_13xuo"]
+resource_name = "new_animation"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8xdj4"]
+_data = {
+"new_animation": SubResource("Animation_13xuo")
+}
+
 [node name="TestPlayer" type="CharacterBody3D"]
 script = ExtResource("1_h87oj")
 
@@ -26,3 +65,42 @@ mesh = SubResource("PlaneMesh_8hsvc")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_b2kyq")
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+texture = SubResource("ViewportTexture_ybase")
+
+[node name="Skeleton2D" type="Skeleton2D" parent="."]
+modification_stack = SubResource("SkeletonModificationStack2D_ytqkx")
+
+[node name="LeftArm" type="Sprite2D" parent="Skeleton2D"]
+position = Vector2(-90, 273)
+texture = SubResource("AtlasTexture_melh4")
+
+[node name="RightLeg" type="Sprite2D" parent="Skeleton2D/LeftArm"]
+position = Vector2(143, 135)
+texture = SubResource("AtlasTexture_o2nef")
+
+[node name="LeftLeg" type="Sprite2D" parent="Skeleton2D/LeftArm/RightLeg"]
+position = Vector2(-88, -1)
+texture = SubResource("AtlasTexture_o2nef")
+
+[node name="Torso" type="Sprite2D" parent="Skeleton2D/LeftArm/RightLeg/LeftLeg"]
+position = Vector2(46, -120)
+texture = SubResource("AtlasTexture_75i8u")
+
+[node name="Head" type="Sprite2D" parent="Skeleton2D/LeftArm/RightLeg/LeftLeg/Torso"]
+position = Vector2(-8, -290)
+texture = SubResource("AtlasTexture_mpcng")
+
+[node name="Mouth" type="Sprite2D" parent="Skeleton2D/LeftArm/RightLeg/LeftLeg/Torso/Head"]
+position = Vector2(-15, 196)
+texture = SubResource("AtlasTexture_2p1pw")
+
+[node name="RightArm" type="Sprite2D" parent="Skeleton2D/LeftArm/RightLeg/LeftLeg/Torso/Head/Mouth"]
+position = Vector2(90, 83)
+texture = SubResource("AtlasTexture_hl6qr")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Skeleton2D"]
+libraries = {
+"": SubResource("AnimationLibrary_8xdj4")
+}
