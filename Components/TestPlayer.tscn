@@ -1,27 +1,16 @@
-[gd_scene load_steps=18 format=3 uid="uid://c18jfoms3v1ba"]
+[gd_scene load_steps=15 format=3 uid="uid://c18jfoms3v1ba"]
 
-[ext_resource type="Texture2D" uid="uid://r3ofhl302o3v" path="res://Assets/testPlayer.png" id="1_dl2cf"]
 [ext_resource type="Script" path="res://Scripts/PlayerControl.gd" id="1_h87oj"]
 [ext_resource type="Texture2D" uid="uid://b51mpd4wrx6nt" path="res://Assets/cosmichorror.png" id="3_f2iuj"]
 [ext_resource type="Texture2D" uid="uid://tnwhrmejfw0x" path="res://Assets/PlayerAtlas.tres" id="3_h2l7h"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ur1bt"]
-transparency = 1
-albedo_texture = ExtResource("1_dl2cf")
-billboard_mode = 1
-billboard_keep_scale = true
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_8hsvc"]
-material = SubResource("StandardMaterial3D_ur1bt")
-size = Vector2(1, 1)
-orientation = 2
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_b2kyq"]
+size = Vector3(2.3958, 7.59189, 1)
 
-[sub_resource type="ViewportTexture" id="ViewportTexture_ybase"]
+[sub_resource type="ViewportTexture" id="ViewportTexture_1bitc"]
 viewport_path = NodePath("SubViewport")
 
-[sub_resource type="SkeletonModificationStack2D" id="SkeletonModificationStack2D_ytqkx"]
+[sub_resource type="SkeletonModificationStack2D" id="SkeletonModificationStack2D_5hc65"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_melh4"]
 atlas = ExtResource("3_h2l7h")
@@ -60,47 +49,55 @@ script = ExtResource("1_h87oj")
 
 [node name="Pivot" type="Node3D" parent="."]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Pivot"]
-mesh = SubResource("PlaneMesh_8hsvc")
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, -0.0413753, 2.08165e-12)
 shape = SubResource("BoxShape3D_b2kyq")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
-texture = SubResource("ViewportTexture_ybase")
+offset = Vector2(2.08165e-12, 2.08165e-12)
+texture = SubResource("ViewportTexture_1bitc")
 
-[node name="Skeleton2D" type="Skeleton2D" parent="."]
-modification_stack = SubResource("SkeletonModificationStack2D_ytqkx")
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+handle_input_locally = false
+snap_2d_transforms_to_pixel = true
+size = Vector2i(600, 800)
+render_target_update_mode = 4
 
-[node name="LeftArm" type="Sprite2D" parent="Skeleton2D"]
-position = Vector2(-90, 273)
+[node name="CharacterSkeleton" type="Skeleton2D" parent="SubViewport"]
+position = Vector2(300, 300)
+modification_stack = SubResource("SkeletonModificationStack2D_5hc65")
+
+[node name="LeftArm" type="Sprite2D" parent="SubViewport/CharacterSkeleton"]
+position = Vector2(-66, 279)
+rotation = 0.484328
 texture = SubResource("AtlasTexture_melh4")
 
-[node name="RightLeg" type="Sprite2D" parent="Skeleton2D/LeftArm"]
-position = Vector2(143, 135)
+[node name="LeftLeg" type="Sprite2D" parent="SubViewport/CharacterSkeleton"]
+position = Vector2(-31, 413)
 texture = SubResource("AtlasTexture_o2nef")
 
-[node name="LeftLeg" type="Sprite2D" parent="Skeleton2D/LeftArm/RightLeg"]
-position = Vector2(-88, -1)
+[node name="RightLeg" type="Sprite2D" parent="SubViewport/CharacterSkeleton"]
+position = Vector2(57, 414)
 texture = SubResource("AtlasTexture_o2nef")
 
-[node name="Torso" type="Sprite2D" parent="Skeleton2D/LeftArm/RightLeg/LeftLeg"]
-position = Vector2(46, -120)
+[node name="Torso" type="Sprite2D" parent="SubViewport/CharacterSkeleton"]
+position = Vector2(15, 293)
 texture = SubResource("AtlasTexture_75i8u")
 
-[node name="Head" type="Sprite2D" parent="Skeleton2D/LeftArm/RightLeg/LeftLeg/Torso"]
-position = Vector2(-8, -290)
+[node name="Head" type="Sprite2D" parent="SubViewport/CharacterSkeleton"]
+position = Vector2(7, 3)
 texture = SubResource("AtlasTexture_mpcng")
 
-[node name="Mouth" type="Sprite2D" parent="Skeleton2D/LeftArm/RightLeg/LeftLeg/Torso/Head"]
-position = Vector2(-15, 196)
+[node name="Mouth" type="Sprite2D" parent="SubViewport/CharacterSkeleton"]
+position = Vector2(-8, 199)
 texture = SubResource("AtlasTexture_2p1pw")
 
-[node name="RightArm" type="Sprite2D" parent="Skeleton2D/LeftArm/RightLeg/LeftLeg/Torso/Head/Mouth"]
-position = Vector2(90, 83)
+[node name="RightArm" type="Sprite2D" parent="SubViewport/CharacterSkeleton"]
+position = Vector2(82, 282)
 texture = SubResource("AtlasTexture_hl6qr")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Skeleton2D"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="SubViewport/CharacterSkeleton"]
 libraries = {
 "": SubResource("AnimationLibrary_8xdj4")
 }
