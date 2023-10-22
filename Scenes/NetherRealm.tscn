@@ -1,3 +1,112 @@
-[gd_scene format=3 uid="uid://y84b0p22lpda"]
+[gd_scene load_steps=19 format=3 uid="uid://y84b0p22lpda"]
+
+[ext_resource type="Script" path="res://Scripts/PortalController.gd" id="1_8vhcd"]
+[ext_resource type="PackedScene" uid="uid://bburei6ug3fm" path="res://Scenes/ShopFloor.tscn" id="2_v271m"]
+[ext_resource type="PackedScene" uid="uid://c18jfoms3v1ba" path="res://Components/TestPlayer.tscn" id="3_t33ci"]
+[ext_resource type="Texture2D" uid="uid://c0u56nnuisglp" path="res://Assets/testWeapon.png" id="4_5a0xl"]
+[ext_resource type="Script" path="res://Scripts/MonsterSpawner.gd" id="4_8vs88"]
+[ext_resource type="PackedScene" uid="uid://dcdeysj50fa0l" path="res://Components/TestMonster.tscn" id="5_u7gcv"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4751b"]
+size = Vector3(100, 0, 100)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_56qpr"]
+albedo_color = Color(0.360784, 0.47451, 0.454902, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_eo3p7"]
+material = SubResource("StandardMaterial3D_56qpr")
+size = Vector2(100, 100)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_fgjj4"]
+size = Vector3(3, 1, 4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q0hpb"]
+albedo_color = Color(0.513726, 0, 0.513726, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_v5m1i"]
+material = SubResource("StandardMaterial3D_q0hpb")
+size = Vector3(3, 1, 4)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ishdn"]
+height = 5.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ddq6l"]
+transparency = 1
+albedo_texture = ExtResource("4_5a0xl")
+billboard_keep_scale = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_baeso"]
+material = SubResource("StandardMaterial3D_ddq6l")
+size = Vector2(2, 5)
+orientation = 2
+
+[sub_resource type="BoxMesh" id="BoxMesh_2tbu3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_agelk"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xo8ah"]
+material = SubResource("StandardMaterial3D_agelk")
 
 [node name="NetherRealm" type="Node"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10, 0)
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+shape = SubResource("BoxShape3D_4751b")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("PlaneMesh_eo3p7")
+
+[node name="Portal" type="Area3D" parent="."]
+script = ExtResource("1_8vhcd")
+connectedScene = ExtResource("2_v271m")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Portal"]
+shape = SubResource("BoxShape3D_fgjj4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Portal"]
+mesh = SubResource("BoxMesh_v5m1i")
+
+[node name="TestPlayer" parent="." instance=ExtResource("3_t33ci")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 4.25128, 4, 4)
+
+[node name="Marker3D" type="Marker3D" parent="TestPlayer"]
+transform = Transform3D(1, 0, 0, 0, 0.642788, 0.766044, 0, -0.766044, 0.642788, 0, 22, 20)
+
+[node name="Camera3D" type="Camera3D" parent="TestPlayer/Marker3D"]
+
+[node name="Weapon" type="Marker3D" parent="TestPlayer"]
+visible = false
+
+[node name="Area3D" type="Area3D" parent="TestPlayer/Weapon"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.71755, -2.77361, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TestPlayer/Weapon/Area3D"]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("CapsuleShape3D_ishdn")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TestPlayer/Weapon/Area3D/CollisionShape3D"]
+transform = Transform3D(1, -3.55271e-15, 0, 3.55271e-15, 1, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("PlaneMesh_baeso")
+skeleton = NodePath("../..")
+
+[node name="MonsterSpawn" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17.2899, 0, 6)
+script = ExtResource("4_8vs88")
+monster_scene = ExtResource("5_u7gcv")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MonsterSpawn"]
+mesh = SubResource("BoxMesh_2tbu3")
+
+[node name="MonsterSpawnAggro" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MonsterSpawnAggro"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 22.7592, 0, 15.538)
+mesh = SubResource("BoxMesh_xo8ah")
+
+[connection signal="body_entered" from="Portal" to="Portal" method="_on_body_entered"]
+[connection signal="body_exited" from="Portal" to="Portal" method="_on_body_exited"]
